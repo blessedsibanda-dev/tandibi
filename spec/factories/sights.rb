@@ -18,7 +18,7 @@
 #
 FactoryBot.define do
   factory :sight do
-    place { nil }
+    place { create(:place) }
     activity_type { "MyString" }
   end
 end

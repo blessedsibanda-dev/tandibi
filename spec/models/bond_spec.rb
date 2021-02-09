@@ -21,5 +21,14 @@
 require 'rails_helper'
 
 RSpec.describe Bond, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#valid?' do
+    it 'is invalid when state is blank' do
+      bond = create(:bond)
+      expect(bond).to be_valid
+
+      bond.state = ""
+      expect(bond).to be_invalid
+    end
+
+  end
 end

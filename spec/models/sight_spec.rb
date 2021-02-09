@@ -19,5 +19,13 @@
 require 'rails_helper'
 
 RSpec.describe Sight, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#valid?' do
+    it 'is invalid when activity_type is blank' do
+      sight = create(:sight)
+      expect(sight).to be_valid
+
+      sight.activity_type = ''
+      expect(sight).to be_invalid
+    end
+  end
 end
