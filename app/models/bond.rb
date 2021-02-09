@@ -28,4 +28,7 @@ class Bond < ApplicationRecord
   ].freeze
 
   validates :state, inclusion: { in: STATES }
+
+  belongs_to :user
+  belongs_to :friend, class_name: "User"
 end

@@ -40,6 +40,13 @@ RSpec.describe User, type: :model do
       another_user.username = user.username
       expect(another_user).not_to be_valid
     end
+    it "is invalid when username is blank" do
+      user = create(:user)
+      expect(user).to be_valid
+
+      user.username = ""
+      expect(user).not_to be_valid
+    end
     it "is invalid when first_name is blank" do
       user = create(:user)
       expect(user).to be_valid
@@ -65,9 +72,53 @@ RSpec.describe User, type: :model do
 
       user.email = "foo+bar@example.com"
       expect(user).to be_valid
-      
+
       user.email = "foo.bar@sub.example.co.id"
       expect(user).to be_valid
+    end
+  end
+
+  describe '#followings' do
+    it "can list all of the user's followings" do
+      user = create(:user)
+      friend1 = create(:user)
+      friend2 = create(:user)
+      friend3 = create(:user)
+
+      Bond.create user: user, friend: friend1, state: Bond::FOLLOWING
+      Bond.create user: user, friend: friend2, state: Bond::FOLLOWING
+      Bond.create user: user, friend: friend3, state: Bond::REQUESTING
+
+      expect(user.followings).to include(friend1, friend2)
+      expect(user.follow_requests).to include(friend3)
+    end
+    it 'can list all of the user\'s followers' do
+      user1 = create(:user)
+      user2 = create(:user)
+      fol1 = create(:user)
+      fol2 = create(:user)
+      fol3 = create(:user)
+      fol4 = create(:user)
+
+      Bond.create user: fol1, friend: user1, state: Bond::FOLLOWING
+      Bond.create user: fol2, friend: user1, state: Bond::FOLLOWING
+      Bond.create user: fol3, friend: user2, state: Bond::FOLLOWING
+      Bond.create user: fol4, friend: user2, state: Bond::REQUESTING
+
+      expect(user1.followers).to eq([fol1, fol2])
+      expect(user2.followers).to eq([fol3])
+    end
+  end
+
+  describe '#save' do
+    it "capitalized the name correctly" do
+      user = create(:user)
+      user.first_name = "blESseD"
+      user.last_name = "sibanDa"
+      user.save
+  
+      expect(user.first_name).to eq("Blessed")
+      expect(user.last_name).to eq("Sibanda")
     end
   end
 end

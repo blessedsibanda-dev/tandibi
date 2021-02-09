@@ -28,12 +28,26 @@ RSpec.describe Bond, type: :model do
       bond = Bond.new(user_id: user.id, friend_id: friend.id)
       expect(bond).not_to be_valid
 
-      bond.state = 'unknown'
+      bond.state = "unknown"
       expect(bond).not_to be_valid
 
       Bond::STATES.each do |state|
         bond.state = state
         expect(bond).to be_valid
+      end
+    end
+  end
+  describe "#save" do
+    context "when complete data is given" do
+      it "can be persisted" do
+        user = create(:user)
+        friend = create(:user)
+
+        bond = Bond.new(user: user, friend: friend, state: Bond::FOLLOWING)
+        bond.save
+        expect(bond).to be_persisted
+        expect(bond.user).to eq(user)
+        expect(bond.friend).to eq(friend)
       end
     end
   end
