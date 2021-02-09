@@ -22,8 +22,6 @@ RSpec.describe Sight, type: :model do
   describe '#valid?' do
     it 'should validate activity type correctly' do
       sight = Sight.new(place: Place.new)
-
-      sight.activity_type = ''
       expect(sight).to be_invalid
 
       sight.activity_type = 'unknown'

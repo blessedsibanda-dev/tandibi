@@ -29,23 +29,45 @@ RSpec.describe User, type: :model do
     end
     it "is invalid when email is taken" do
       create :user, email: "blessed@example.org"
-      user = build(:user, email: 'blessed@example.org')
+      user = build(:user, email: "blessed@example.org")
       expect(user).not_to be_valid
     end
-    it 'is valid if the username is unique' do
+    it "is valid if the username is unique" do
       user = create(:user)
       another_user = create(:user)
 
       expect(user).to be_valid
       another_user.username = user.username
-      expect(another_user).to be_invalid
+      expect(another_user).not_to be_valid
     end
     it "is invalid when first_name is blank" do
       user = create(:user)
-      expect(user).to be_valid 
+      expect(user).to be_valid
 
       user.first_name = ""
-      expect(user).to be_invalid
+      expect(user).not_to be_valid
+    end
+    it "is invalid if the email looks bogus" do
+      user = create(:user)
+      expect(user).to be_valid
+
+      user.email = ""
+      expect(user).not_to be_valid
+
+      user.email = "foo.bar#example.com"
+      expect(user).not_to be_valid
+
+      user.email = "foo.bar"
+      expect(user).not_to be_valid
+
+      user.email = "f.o.o.b.a.r@example.com"
+      expect(user).to be_valid
+
+      user.email = "foo+bar@example.com"
+      expect(user).to be_valid
+      
+      user.email = "foo.bar@sub.example.co.id"
+      expect(user).to be_valid
     end
   end
 end
