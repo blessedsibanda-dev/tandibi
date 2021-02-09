@@ -18,9 +18,9 @@
 #
 FactoryBot.define do
   factory :place do
-    locale { "MyString" }
-    coordinate { "Point(111 222 0)" }
-    name { "MyString" }
-    place_type { "MyString" }
+    locale { "en" }
+    coordinate { "Point(1 2 3)" }
+    name { ["Chicken Inn", "La Fantasia"].sample }
+    place_type { "coffee_shop" }
   end
 end

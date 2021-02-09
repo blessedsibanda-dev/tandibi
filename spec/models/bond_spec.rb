@@ -23,9 +23,9 @@ require "rails_helper"
 RSpec.describe Bond, type: :model do
   describe "#valid?" do
     it "validates state correctly" do
-      friend = User.new
-      user = User.new
-      bond = Bond.new(user_id: user.id, friend_id: friend.id)
+      friend = build(:user)
+      user = build(:user)
+      bond = Bond.new(user: user, friend: friend)
       expect(bond).not_to be_valid
 
       bond.state = "unknown"
@@ -38,6 +38,7 @@ RSpec.describe Bond, type: :model do
     end
   end
   describe "#save" do
+
     context "when complete data is given" do
       it "can be persisted" do
         user = create(:user)
