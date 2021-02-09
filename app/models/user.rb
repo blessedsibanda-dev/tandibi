@@ -17,4 +17,6 @@
 #  index_users_on_username  (username) UNIQUE
 #
 class User < ApplicationRecord
+  validates :email,:username, uniqueness: true
+  validates :first_name, presence: true
 end
