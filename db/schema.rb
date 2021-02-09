@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_09_061734) do
+ActiveRecord::Schema.define(version: 2021_02_09_062317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,13 @@ ActiveRecord::Schema.define(version: 2021_02_09_061734) do
     t.index ["user_id", "friend_id"], name: "index_bonds_on_user_id_and_friend_id", unique: true
   end
 
+  create_table "pictures", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.string "caption"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "thread_id"
@@ -32,6 +39,12 @@ ActiveRecord::Schema.define(version: 2021_02_09_061734) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["postable_type", "postable_id"], name: "index_posts_on_postable_type_and_postable_id"
+  end
+
+  create_table "statuses", force: :cascade do |t|
+    t.string "text", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -48,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_02_09_061734) do
 
   add_foreign_key "bonds", "users"
   add_foreign_key "bonds", "users", column: "friend_id"
+  add_foreign_key "pictures", "posts"
   add_foreign_key "posts", "posts", column: "thread_id"
   add_foreign_key "posts", "users"
 end
