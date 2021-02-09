@@ -18,17 +18,23 @@
 #  fk_rails_...  (friend_id => users.id)
 #  fk_rails_...  (user_id => users.id)
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Bond, type: :model do
-  describe '#valid?' do
-    it 'is invalid when state is blank' do
-      bond = create(:bond)
-      expect(bond).to be_valid
+  describe "#valid?" do
+    it "validates state correctly" do
+      friend = User.new
+      user = User.new
+      bond = Bond.new(user_id: user.id, friend_id: friend.id)
+      expect(bond).not_to be_valid
 
-      bond.state = ""
-      expect(bond).to be_invalid
+      bond.state = 'unknown'
+      expect(bond).not_to be_valid
+
+      Bond::STATES.each do |state|
+        bond.state = state
+        expect(bond).to be_valid
+      end
     end
-
   end
 end

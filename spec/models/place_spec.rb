@@ -16,8 +16,24 @@
 #  index_places_on_locale                 (locale)
 #  index_places_on_locale_and_coordinate  (locale,coordinate) UNIQUE
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Place, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "#valid?" do
+    it "should validate place-type correctly" do
+      place = Place.new(
+        locale: "en",
+        name: "McDonalds",
+        coordinate: "Point(12 12 0)",
+      )
+
+      place.place_type = "unknown"
+      expect(place).not_to be_valid
+
+      Place::PLACE_TYPES.each do |type|
+        place.place_type = type
+        expect(place).to be_valid
+      end
+    end
+  end
 end
