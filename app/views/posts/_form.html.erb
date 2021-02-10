@@ -7,14 +7,3 @@
     <%= f.submit "Say", class: 'submit-btn' %>
   <% end %>
 </div>
-<script>
-  var clickHandler = (evt) => {
-    var formElm = evt.target.closest('form');
-    var textareaElm = formElm.querySelector('textarea');
-    textareaElm.focus();
-  };
-  
-  document
-      .querySelector('#<%= form_id %>')
-      .addEventListener('click', clickHandler, false);
-</script>
