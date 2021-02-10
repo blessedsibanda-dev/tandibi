@@ -28,7 +28,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          authentication_keys: [:login],
          reset_password_keys: [:login]
-  
+
   attr_writer :login
 
   before_save :ensure_proper_name_case
@@ -61,7 +61,22 @@ class User < ApplicationRecord
     username
   end
 
-  def login 
+  def name
+    if last_name
+      "#{first_name} #{last_name}"
+    else
+      first_name
+    end
+  end
+
+  def profile_picture_url
+    @profile_picture_url ||= begin
+        hash = Digest::MD5.hexdigest(email)
+        "https://www.gravatar.com/avatar/#{hash}?d=wavatar"
+      end
+  end
+
+  def login
     @login || username || email
   end
 
@@ -70,8 +85,8 @@ class User < ApplicationRecord
   end
 
   def self.find_for_database_authentication(conditions)
-    conditions =conditions.dup 
-    login = conditions.delete(:login).downcase 
+    conditions = conditions.dup
+    login = conditions.delete(:login).downcase
     find_authenticatable(login)
   end
 
@@ -84,13 +99,13 @@ class User < ApplicationRecord
   end
 
   def self.find_recoverable_or_init_with_errors(conditions)
-    conditions = conditions.dup 
-    login = conditions.delete(:login).downcase 
+    conditions = conditions.dup
+    login = conditions.delete(:login).downcase
     recoverable = find_authenticatable(login)
     unless recoverable
       recoverable = new(login: login)
       recoverable.errors.add(:login, login.present? ? :not_found : :blank)
-    end 
+    end
     recoverable
   end
 
