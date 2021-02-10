@@ -26,6 +26,10 @@ class Post < ApplicationRecord
   has_many :pictures
 
   scope :not_reply, -> { where(:thread_id => nil)}
+  scope :written_by, -> (username) { 
+    poster = User.find_by username: username
+    where(user: poster)
+  }
 
   has_many :replies, class_name: 'Post', foreign_key: :thread_id
  
