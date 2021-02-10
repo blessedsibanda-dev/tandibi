@@ -1,5 +1,5 @@
 .body-session {
-  @apply bg-gray-100 font-sans h-screen w-screen;
+  @apply bg-gray-100 font-sans h-screen px-4;
 }
 
 .body-session h1.title {
