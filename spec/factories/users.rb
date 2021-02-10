@@ -28,5 +28,6 @@ FactoryBot.define do
     last_name { ["Sibanda", "Moyo", "Toro"].sample }
     email { "#{SecureRandom.hex(4)}@example.org" }
     is_public { true }
+    password { "foobar" }
   end
 end
