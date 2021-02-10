@@ -57,6 +57,10 @@ class User < ApplicationRecord
            through: :inward_bonds,
            source: :user
 
+  def to_param
+    username
+  end
+
   def login 
     @login || username || email
   end

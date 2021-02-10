@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   authenticate :user do
-    resources :timelines, only: [:index, :show]
+    resources :timelines, only: [:index, :show], param: :username
   end
 
   root to: "home#index"
