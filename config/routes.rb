@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   authenticate :user do
     resources :timelines, only: [:index, :show], param: :username
+    resources :posts, only: [:create, :show]
   end
 
   root to: "home#index"
